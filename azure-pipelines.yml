@@ -3,7 +3,7 @@ pool:
 
 # Variables
 variables:
-  workload: ManagedDesktop
+  workload: $(Build.SourceBranchName)
   
 steps:
 - script: | 
