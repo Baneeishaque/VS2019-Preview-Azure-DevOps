@@ -3,12 +3,15 @@ pool:
 
 # Variables
 variables:
-  workload: $(Build.SourceBranchName)
+  # Secret Variables
+  MAPPED_FTP_HOST: $(FTP_HOST)
+  MAPPED_FTP_USER: $(FTP_USER)
+  MAPPED_FTP_PWD: $(FTP_PWD)
   
 steps:
 - script: | 
-    vs_Enterprise.exe --passive --layout VS2019_layout_$(workload) --lang en-US --add Microsoft.VisualStudio.Workload.$(workload) --includeRecommended --includeOptional
-    dir VS2019_layout_$(workload)
+    vs_Enterprise.exe --passive --layout VS2019_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended --includeOptional
+    dir VS2019_layout_$(Build.SourceBranchName)
   displayName: 'Download VS2019 Workload Items'
   continueOnError: true 
   timeoutInMinutes: 0
@@ -17,7 +20,7 @@ steps:
   displayName: 'Check for Zip'
 # Compress Workload Directory & Verify Compress
 - script: |
-    zip.exe -r VS2019_layout_$(workload).zip VS2019_layout_$(workload) 
+    zip.exe -r VS2019_layout_$(Build.SourceBranchName).zip VS2019_layout_$(Build.SourceBranchName) 
     echo 
     echo Current Directory Contents
     echo --------------------------------------------------------
@@ -28,10 +31,10 @@ steps:
   displayName: 'FTP Upload Directory Zip File'
   inputs:
     credentialsOption: inputs
-    serverUrl: 'ftp://192.254.233.216'
-    username: 'root@alaneesgroup.com'
-    password: 9895204814
+    serverUrl: 'ftp://$(MAPPED_FTP_HOST)'
+    username: $(MAPPED_FTP_USER)
+    password: $(MAPPED_FTP_PWD)
     # TODO : Add option for file instead of directory
     rootDirectory: '.'
     remoteDirectory: '/azure_devops/vs2019_16-8-2_full'
-    filePatterns: 'VS2019_layout_$(workload).zip'
+    filePatterns: 'VS2019_layout_$(Build.SourceBranchName).zip'
