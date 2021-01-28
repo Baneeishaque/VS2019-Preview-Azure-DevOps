@@ -38,5 +38,5 @@ steps:
     password: $(MAPPED_FTP_PWD)
     # TODO : Add option for file instead of directory
     rootDirectory: '.'
-    remoteDirectory: '/public_html/azure_devops/vs2019_$(version)'
+    remoteDirectory: '/public_html/files/azure_devops/vs2019_$(version)'
     filePatterns: 'VS2019-$(version)_layout_$(Build.SourceBranchName).zip'
