@@ -3,6 +3,8 @@ pool:
 
 # Variables
 variables:
+  version: 16-8-4
+  vs2019InstallerFile: vs_enterprise__1935407894.1609606158.exe
   # Secret Variables
   MAPPED_FTP_HOST: $(FTP_HOST)
   MAPPED_FTP_USER: $(FTP_USER)
@@ -10,9 +12,9 @@ variables:
   
 steps:
 - script: | 
-    vs_Enterprise.exe --passive --layout VS2019_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended --includeOptional
-    dir VS2019_layout_$(Build.SourceBranchName)
-  displayName: 'Download VS2019 Workload Items'
+    $(vs2019InstallerFile) --passive --layout VS2019-$(version)_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended --includeOptional
+    dir VS2019-$(version)_layout_$(Build.SourceBranchName)
+  displayName: 'Download VS2019 $(version) $(Build.SourceBranchName) Items'
   continueOnError: true 
   timeoutInMinutes: 0
 # Check for Zip
@@ -20,7 +22,7 @@ steps:
   displayName: 'Check for Zip'
 # Compress Workload Directory & Verify Compress
 - script: |
-    zip.exe -r VS2019_layout_$(Build.SourceBranchName).zip VS2019_layout_$(Build.SourceBranchName) 
+    zip.exe -r VS2019-$(version)_layout_$(Build.SourceBranchName).zip VS2019-$(version)_layout_$(Build.SourceBranchName) 
     echo 
     echo Current Directory Contents
     echo --------------------------------------------------------
@@ -36,5 +38,5 @@ steps:
     password: $(MAPPED_FTP_PWD)
     # TODO : Add option for file instead of directory
     rootDirectory: '.'
-    remoteDirectory: '/azure_devops/vs2019_16-8-2_full'
-    filePatterns: 'VS2019_layout_$(Build.SourceBranchName).zip'
+    remoteDirectory: '/public_html/azure_devops/vs2019_$(version)'
+    filePatterns: 'VS2019-$(version)_layout_$(Build.SourceBranchName).zip'
