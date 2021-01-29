@@ -12,7 +12,7 @@ variables:
   
 steps:
 - script: | 
-    $(vs2019InstallerFile) --passive --layout VS2019-$(version)_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended --includeOptional
+    $(vs2019InstallerFile) --passive --layout VS2019-$(version)_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended
     dir VS2019-$(version)_layout_$(Build.SourceBranchName)
   displayName: 'Download VS2019 $(version) $(Build.SourceBranchName) Items'
   continueOnError: true 
