@@ -5,6 +5,7 @@ pool:
 variables:
   version: 16-8-4
   vs2019InstallerFile: vs_enterprise__1935407894.1609606158.exe
+  repositoryName: vs2019_Azure_DevOps
   # Secret Variables
   MAPPED_FTP_HOST: $(FTP_HOST)
   MAPPED_FTP_USER: $(FTP_USER)
@@ -12,7 +13,7 @@ variables:
   
 steps:
 - script: | 
-    $(vs2019InstallerFile) --passive --layout VS2019-$(version)_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended
+    $(vs2019InstallerFile) --passive --layout VS2019-$(version)_layout_$(Build.SourceBranchName) --lang en-US --add Microsoft.VisualStudio.Workload.$(Build.SourceBranchName) --includeRecommended --includeOptional
     dir VS2019-$(version)_layout_$(Build.SourceBranchName)
   displayName: 'Download VS2019 $(version) $(Build.SourceBranchName) Items'
   continueOnError: true 
@@ -38,5 +39,5 @@ steps:
     password: $(MAPPED_FTP_PWD)
     # TODO : Add option for file instead of directory
     rootDirectory: '.'
-    remoteDirectory: '/public_html/files/azure_devops/vs2019_$(version)'
+    remoteDirectory: '/public_html/files/$(repositoryName)/$(Build.SourceVersion)'
     filePatterns: 'VS2019-$(version)_layout_$(Build.SourceBranchName).zip'
