@@ -28,10 +28,10 @@ steps:
     echo Current Directory Contents
     echo --------------------------------------------------------
     dir
-  displayName: 'Zip Workload Directory'
-# Upload Repository Zip File
-- task: FtpUpload@1
-  displayName: 'FTP Upload Directory Zip File'
+  displayName: 'Zip VS2019 $(version) $(Build.SourceBranchName) Directory'
+# Upload Workload Directory Zip File
+- task: FtpUpload@2
+  displayName: 'FTP Upload VS2019 $(version) $(Build.SourceBranchName) Directory Zip File'
   inputs:
     credentialsOption: inputs
     serverUrl: 'ftp://$(MAPPED_FTP_HOST)'
